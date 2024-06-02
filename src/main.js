@@ -1,27 +1,20 @@
-import Home from "./components/home.js";
-import About from "./components/about.js";
+import routes from "./routes/index.js";
+import renderHeader from "../src/components/header.js";
 
-const routes = {
-  "/": Home,
-  "/about": About,
-};
+const $main = document.getElementById("main");
+const $web_title = document.querySelector("title");
 
-const $root = document.getElementById("root");
-$root.innerHTML = routes["/"].render();
+$main.innerHTML = routes["/"].element.render();
 
-const changeUrl = (requestUrl) => {
+export const changePath = (requestUrl) => {
   history.pushState(null, null, requestUrl);
-  $root.innerHTML = routes[requestUrl].render();
+  $main.innerHTML = routes[requestUrl].element.render();
+  $web_title.innerText = `SPA | ${routes[requestUrl].title}`;
 };
 
-window.addEventListener("click", (e) => {
-  if (e.target.classList.contains("about-link")) {
-    changeUrl("/about");
-  } else if (e.target.classList.contains("home-link")) {
-    changeUrl("/");
-  }
+// 뒤로가기 감지 시, path 키에 매칭되는 컴포넌트 렌더링
+window.addEventListener("popstate", () => {
+  changePath(window.location.pathname);
 });
 
-window.addEventListener("popstate", () => {
-  changeUrl(window.location.pathname);
-});
+renderHeader();

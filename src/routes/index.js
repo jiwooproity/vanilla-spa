@@ -1,9 +1,17 @@
-import Home from "../components/home.js";
-import About from "../components/about.js";
+import Home from "../page/home.js";
+import About from "../page/about.js";
 
 const routes = {
-  "/": Home,
-  "/about": About,
+  "/": {
+    key: "home",
+    title: "Home",
+    element: Home,
+  },
+  "/about": {
+    key: "about",
+    title: "About",
+    element: About,
+  },
 };
 
 export default routes;
