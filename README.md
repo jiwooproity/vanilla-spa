@@ -8,7 +8,7 @@ MPA같은 경우는 URL 전환이 이루어짐에 따라 서버에 해당 URL에
 
 따라서, SPA는 서버에 리소스를 요청하지 않고 클라이언트 내에서 화면을 전환하는 것을 말할 수 있다.
 
-# 구현 방법
+## 구현 방법
 
 SPA를 구현하기 위해서는 서버에 요청이 아닌 클라이언트 내에서 URL의 변경을 감지하고 페이지 생성을 동적으로 하여야 한다.
 
@@ -16,7 +16,7 @@ SPA를 구현하기 위해서는 서버에 요청이 아닌 클라이언트 내�
 
 따라서, 새로고침 없이 클라이언트가 동적 화면 전환을 하려면 history API를 활용해야 한다.
 
-# 코드
+## 코드
 
 ```
 // Home Page Component
@@ -45,13 +45,27 @@ import Home from "./Home.js";
 import About from "./About.js";
 
 const routes = {
-  "/": Home,
-  "/about": About
+  "/": {
+    key: "about",
+    title: "About",
+    element: Home
+  },
+  "/about": {
+    key: "home",
+    title: "Home",
+    element: About
+  }
 };
+
+export default routes;
+```
+
+```
+import routes from "./routes.js";
 
 const $main = document.getElementById("main");
 
-const changePath = (requestUrl) => {
+export const changePath = (requestUrl) => {
   history.pushState(null, "", requestUrl);
   $main.innerHtml = routes[requestUrl].render();
 }
@@ -60,4 +74,33 @@ const changePath = (requestUrl) => {
 window.addEventListener("popstate", () => {
   changePath(window.location.pathname);// 뒤로가기 후, 현재 URL 전달
 });
+```
+
+## Link
+
+```
+import { changePath } from "./main.js";
+import routes from "./routes.js";
+
+const $header = document.getElementById("header");
+
+const pathKeys = Object.keys(routes);
+
+const renderLinks = () => {
+  const $menu = document.createElement("ul");
+  const $items = pathKeys.map((key) => {
+    const $item = document.createElement("li");
+    const $link = document.createElement("a");
+
+    $link.innerText = routes[key].key;
+    $link.onclick = () => changePath(key);
+    $item.appendChild($link);
+    return $item
+  });
+
+  $menu.append(...$items);
+  $header.appendChild($menu);
+}
+
+renderLinks();
 ```
