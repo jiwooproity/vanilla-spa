@@ -19,18 +19,30 @@ SPA를 구현하기 위해서는 서버에 요청이 아닌 클라이언트 내�
 # 코드
 
 ```
-// Page Component
+// Home Page Component
 class Home {
   render() {
     return `<div>Home Page</div>`
   }
-}
+};
 
 export default new Home(); // Home 객체 생성과 함께 내보내기
 ```
 
 ```
+// About Page Component
+class About {
+  render() {
+    return `<div>About Page</div>`
+  }
+};
+
+export default new About(); // About 객체 생성과 함께 내보내기
+```
+
+```
 import Home from "./Home.js";
+import About from "./About.js";
 
 const routes = {
   "/": Home,
