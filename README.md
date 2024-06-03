@@ -25,6 +25,8 @@ class Home {
     return `<div>Home Page</div>`
   }
 }
+
+export default new Home(); // Home 객체 생성과 함께 내보내기
 ```
 
 ```
